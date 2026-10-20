@@ -1,0 +1,25 @@
+{% extends 'jobs/base.html' %}
+{% block title %}Müraciətlərim{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">NAMİZƏD PANELİ</p><h1>Müraciətlərim</h1><p class="muted">Göndərdiyin müraciətləri və onların cari statusunu izlə.</p></div>
+<div class="application-list">
+    {% for application in applications %}
+        <article class="panel application-card">
+            <div class="application-main">
+                <div class="company-avatar" aria-hidden="true">{{ application.job.company.name|first|upper }}</div>
+                <div>
+                    <p class="company-name">{{ application.job.company.name }}</p>
+                    <h2>{% if application.job.is_active %}<a href="{% url 'jobs:job_detail' application.job.pk %}">{{ application.job.title }}</a>{% else %}{{ application.job.title }}{% endif %}</h2>
+                    <p class="muted small">Müraciət tarixi: {{ application.created_at|date:'d.m.Y H:i' }}</p>
+                </div>
+            </div>
+            <div class="application-actions">
+                {% include 'jobs/includes/status_badge.html' %}
+                <a class="text-link" href="{% url 'jobs:application_cv' application.pk %}">CV-ni yüklə ↓</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="panel empty-state"><span class="empty-symbol" aria-hidden="true">↗</span><h2>İlk addımı at</h2><p>Hələ heç bir elana müraciət etməmisən.</p><a class="button button-primary" href="{% url 'jobs:job_list' %}">İş elanlarına bax</a></div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#174c3c">
+    <title>{% block title %}İş elanları{% endblock %} | İş Portalı</title>
+    <link rel="stylesheet" href="{% static 'jobs/css/style.css' %}">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Məzmuna keç</a>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{% url 'jobs:job_list' %}">
+                <span class="brand-mark" aria-hidden="true">İP</span>
+                İş Portalı<span class="brand-dot">.</span>
+            </a>
+            <nav class="navigation" aria-label="Əsas menyu">
+                <a href="{% url 'jobs:job_list' %}">İş elanları</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'jobs:my_applications' %}">Müraciətlərim</a>
+                    <a href="{% url 'jobs:employer_applications' %}">Gələn müraciətlər</a>
+                    <a href="{% url 'jobs:company_create' %}">Şirkət yarat</a>
+                {% endif %}
+            </nav>
+            <div class="account-actions">
+                {% if user.is_authenticated %}
+                    <span class="user-name" title="{{ user.username }}">{{ user.username }}</span>
+                    <form method="post" action="{% url 'jobs:logout' %}" class="inline-form">
+                        {% csrf_token %}
+                        <button class="button button-quiet" type="submit">Çıxış</button>
+                    </form>
+                    <a class="button button-primary" href="{% url 'jobs:job_create' %}">Elan yerləşdir <span aria-hidden="true">↗</span></a>
+                {% else %}
+                    <a class="button button-quiet" href="{% url 'jobs:login' %}">Giriş</a>
+                    <a class="button button-primary" href="{% url 'jobs:register' %}">Qeydiyyat</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="container main-content">
+        {% if messages %}
+            <div class="messages" aria-live="polite">
+                {% for message in messages %}
+                    <div class="notice notice-{{ message.tags }}" role="status">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <span>İş Portalı · {% now "Y" %}</span>
+            <span>Yeni iş. Yeni imkanlar.</span>
+        </div>
+    </footer>
+</body>
+</html>

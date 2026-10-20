@@ -1,0 +1,20 @@
+{% extends 'jobs/base.html' %}
+{% block content %}
+<div class="form-layout">
+    <a class="back-link" href="{% url 'jobs:job_list' %}">← İş elanlarına qayıt</a>
+    <section class="panel form-panel">
+        <div class="form-heading">
+            <p class="eyebrow">İŞ PORTALI</p>
+            <h1>{% block heading %}{% endblock %}</h1>
+            <p class="muted">{% block description %}{% endblock %}</p>
+        </div>
+        <form method="post" {% block enctype %}{% endblock %} class="stacked-form">
+            {% csrf_token %}
+            {% include 'jobs/includes/form_fields.html' %}
+            {% block extra_fields %}{% endblock %}
+            <button type="submit" class="button button-primary button-full">{% block submit_label %}Yadda saxla{% endblock %}</button>
+        </form>
+        <div class="form-bottom">{% block form_bottom %}{% endblock %}</div>
+    </section>
+</div>
+{% endblock %}

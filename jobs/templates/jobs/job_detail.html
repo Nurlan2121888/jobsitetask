@@ -1,0 +1,35 @@
+{% extends 'jobs/base.html' %}
+{% block title %}{{ job.title }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'jobs:job_list' %}">← Bütün elanlar</a>
+<div class="detail-layout">
+    <article class="panel detail-main">
+        <span class="category-tag">{{ job.category.name }}</span>
+        <h1>{{ job.title }}</h1>
+        <p class="detail-company">{{ job.company.name }} <span>· {{ job.city }}</span></p>
+        <div class="detail-divider"></div>
+        <section class="prose"><h2>İş haqqında</h2>{{ job.description|linebreaks }}</section>
+        {% if job.company.description %}
+            <section class="prose"><h2>Şirkət haqqında</h2>{{ job.company.description|linebreaks }}</section>
+        {% endif %}
+    </article>
+    <aside class="panel detail-aside" aria-label="Elanın məlumatları">
+        <p class="eyebrow">AYLIQ MAAŞ</p>
+        <p class="detail-salary">{{ job.salary }} <span>₼</span></p>
+        <dl class="facts">
+            <div><dt>Şəhər</dt><dd>{{ job.city }}</dd></div>
+            <div><dt>Sahə</dt><dd>{{ job.category.name }}</dd></div>
+            <div><dt>Elanın tarixi</dt><dd>{{ job.created_at|date:'d.m.Y' }}</dd></div>
+        </dl>
+        {% if user.is_authenticated %}
+            {% if job.company.owner_id != user.id %}
+                <a class="button button-primary button-full" href="{% url 'jobs:apply_to_job' job.pk %}">Müraciət et ↗</a>
+            {% else %}
+                <a class="button button-primary button-full" href="{% url 'jobs:employer_applications' %}">Müraciətlərə bax</a>
+            {% endif %}
+        {% else %}
+            <a class="button button-primary button-full" href="{% url 'jobs:login' %}?next={% url 'jobs:apply_to_job' job.pk %}">Daxil ol və müraciət et</a>
+        {% endif %}
+    </aside>
+</div>
+{% endblock %}

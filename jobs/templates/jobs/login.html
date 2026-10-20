@@ -1,0 +1,7 @@
+{% extends 'jobs/form_page.html' %}
+{% block title %}Giriş{% endblock %}
+{% block heading %}Xoş gəlmisən{% endblock %}
+{% block description %}Hesabına daxil ol və müraciətlərini idarə et.{% endblock %}
+{% block extra_fields %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}{% endblock %}
+{% block submit_label %}Daxil ol{% endblock %}
+{% block form_bottom %}Hesabın yoxdur? <a href="{% url 'jobs:register' %}">Qeydiyyatdan keç</a>{% endblock %}

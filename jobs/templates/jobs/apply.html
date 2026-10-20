@@ -1,0 +1,7 @@
+{% extends 'jobs/form_page.html' %}
+{% block title %}Müraciət — {{ job.title }}{% endblock %}
+{% block heading %}Müraciət et{% endblock %}
+{% block description %}{{ job.title }} · {{ job.company.name }}{% endblock %}
+{% block enctype %}enctype="multipart/form-data"{% endblock %}
+{% block submit_label %}Müraciəti göndər{% endblock %}
+{% block form_bottom %}<a href="{% url 'jobs:job_detail' job.pk %}">Elanın məlumatlarına qayıt</a>{% endblock %}
